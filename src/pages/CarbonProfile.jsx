@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react'
 import { usePlaidLink } from 'react-plaid-link'
 import { scoreTransactions, computeSummary, getBudgetStatus, getReductions, MONTHLY_BUDGET_KG } from '../utils/carbonScoring'
 import { MOCK_TRANSACTIONS } from '../utils/mockTransactions'
+import { useProfile } from '../context/ProfileContext'
 
 const API_BASE = 'http://localhost:3001'
 
@@ -15,6 +16,7 @@ const SECTOR_META = {
 }
 
 export default function CarbonProfile() {
+  const { connectBank, addReceiptItems } = useProfile()
   const [linkToken, setLinkToken] = useState(null)
   const [connected, setConnected] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -49,6 +51,13 @@ export default function CarbonProfile() {
       setSummary(computeSummary(results))
       setConnected(true)
       setMode('plaid')
+      connectBank()
+      const mapped = results.map((t) => ({
+        name: t.name, category: t.sector || 'Other',
+        price: String(t.amount ?? 0), co2: String(t.kgCO2 ?? 0),
+        grade: t.grade || 'C', source: 'plaid',
+      }))
+      addReceiptItems(mapped)
     } catch {
       setError('Failed to fetch transactions. Try demo mode instead.')
     } finally {
@@ -67,6 +76,13 @@ export default function CarbonProfile() {
     setSummary(computeSummary(results))
     setConnected(true)
     setMode('demo')
+    connectBank()
+    const mapped = results.map((t) => ({
+      name: t.name, category: t.sector || 'Other',
+      price: String(t.amount ?? 0), co2: String(t.kgCO2 ?? 0),
+      grade: t.grade || 'C', source: 'demo',
+    }))
+    addReceiptItems(mapped)
   }
 
   const disconnect = () => {

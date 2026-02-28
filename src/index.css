@@ -58,3 +58,64 @@ body {
     background-attachment: fixed;
   }
 }
+
+/* === Mascot & Pollution Animations === */
+
+@keyframes snow-fall {
+  0%   { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 0.6; }
+  100% { transform: translateY(420px) translateX(20px) rotate(360deg); opacity: 0; }
+}
+
+@keyframes aurora-drift {
+  0%   { transform: translateX(0) scaleY(1); opacity: 0.3; }
+  50%  { transform: translateX(30px) scaleY(1.3); opacity: 0.5; }
+  100% { transform: translateX(0) scaleY(1); opacity: 0.3; }
+}
+
+.aurora-band {
+  animation: aurora-drift 6s ease-in-out infinite;
+}
+.aurora-band-2 {
+  animation: aurora-drift 8s ease-in-out infinite reverse;
+}
+
+.water-wave {
+  background:
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 20px,
+      rgba(56, 189, 248, 0.15) 20px,
+      rgba(56, 189, 248, 0.15) 40px
+    );
+  animation: wave-move 4s linear infinite;
+}
+
+@keyframes wave-move {
+  0%   { background-position-x: 0; }
+  100% { background-position-x: 40px; }
+}
+
+@keyframes ripple-expand {
+  0%   { transform: scaleX(0.3) scaleY(0.3); opacity: 0.6; }
+  100% { transform: scaleX(1.8) scaleY(1); opacity: 0; }
+}
+
+@keyframes pollution-float {
+  0%   { transform: translate(0, 0) scale(1); opacity: 0; }
+  20%  { opacity: var(--pollution-opacity, 0.4); }
+  80%  { opacity: var(--pollution-opacity, 0.4); }
+  100% { transform: translate(var(--x-dir, 100px), var(--y-dir, -100px)) scale(1.5); opacity: 0; }
+}
+
+.pollution-cloud {
+  position: absolute;
+  background: radial-gradient(circle, rgba(50, 50, 50, 0.8) 0%, rgba(100, 100, 100, 0.2) 40%, rgba(31, 41, 55, 0) 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 100;
+  filter: blur(40px);
+  animation: pollution-float var(--duration, 8s) infinite linear;
+}
