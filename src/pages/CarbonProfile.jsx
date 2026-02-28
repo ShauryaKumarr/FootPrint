@@ -59,7 +59,7 @@ export default function CarbonProfile() {
     } finally {
       setLoading(false)
     }
-  }, [connectBank, addReceiptItems])
+  }, [connectBank])
 
   const { open: openPlaid, ready: plaidReady } = usePlaidLink({
     token: linkToken,
