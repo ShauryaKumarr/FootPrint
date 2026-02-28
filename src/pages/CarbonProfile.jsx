@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import { usePlaidLink } from 'react-plaid-link'
-import { scoreTransactions, computeSummary, getBudgetStatus, getReductions, MONTHLY_BUDGET_KG } from '../utils/carbonScoring'
+import { scoreTransactions, getBudgetStatus, getReductions, MONTHLY_BUDGET_KG } from '../utils/carbonScoring'
 import { MOCK_TRANSACTIONS } from '../utils/mockTransactions'
 import { useProfile } from '../context/ProfileContext'
 
@@ -16,15 +16,21 @@ const SECTOR_META = {
 }
 
 export default function CarbonProfile() {
-  const { connectBank, addReceiptItems } = useProfile()
+  const {
+    bankConnected, connectionMode,
+    connectBank, disconnectBank,
+    scoredTransactions, transactionSummary,
+  } = useProfile()
+
   const [linkToken, setLinkToken] = useState(null)
-  const [connected, setConnected] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
-  const [scored, setScored] = useState([])
-  const [summary, setSummary] = useState(null)
-  const [mode, setMode] = useState(null)
   const [filter, setFilter] = useState('all')
+
+  const scored = scoredTransactions
+  const summary = transactionSummary
+  const connected = bankConnected
+  const mode = connectionMode
 
   useEffect(() => {
     fetch(`${API_BASE}/api/create-link-token`, { method: 'POST' })
@@ -47,23 +53,13 @@ export default function CarbonProfile() {
       const data = await res.json()
 
       const results = scoreTransactions(data.transactions)
-      setScored(results)
-      setSummary(computeSummary(results))
-      setConnected(true)
-      setMode('plaid')
-      connectBank()
-      const mapped = results.map((t) => ({
-        name: t.name, category: t.sector || 'Other',
-        price: String(t.amount ?? 0), co2: String(t.kgCO2 ?? 0),
-        grade: t.grade || 'C', source: 'plaid',
-      }))
-      addReceiptItems(mapped)
+      connectBank('plaid', results)
     } catch {
       setError('Failed to fetch transactions. Try demo mode instead.')
     } finally {
       setLoading(false)
     }
-  }, [])
+  }, [connectBank, addReceiptItems])
 
   const { open: openPlaid, ready: plaidReady } = usePlaidLink({
     token: linkToken,
@@ -72,29 +68,16 @@ export default function CarbonProfile() {
 
   const loadDemo = () => {
     const results = scoreTransactions(MOCK_TRANSACTIONS)
-    setScored(results)
-    setSummary(computeSummary(results))
-    setConnected(true)
-    setMode('demo')
-    connectBank()
-    const mapped = results.map((t) => ({
-      name: t.name, category: t.sector || 'Other',
-      price: String(t.amount ?? 0), co2: String(t.kgCO2 ?? 0),
-      grade: t.grade || 'C', source: 'demo',
-    }))
-    addReceiptItems(mapped)
+    connectBank('demo', results)
   }
 
   const disconnect = () => {
-    setConnected(false)
-    setScored([])
-    setSummary(null)
-    setMode(null)
+    disconnectBank()
     setError(null)
     setFilter('all')
   }
 
-  if (!connected) {
+  if (!connected || !summary) {
     return (
       <div className="max-w-4xl mx-auto px-4 py-12">
         <h1 className="text-3xl font-bold text-gray-900 mb-2">Carbon Profile</h1>
