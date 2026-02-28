@@ -17,3 +17,44 @@ body {
   background-color: #f8faf8;
   color: #1a1a2e;
 }
+
+/* Section titles – distinctive typography */
+.section-title {
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  background: linear-gradient(135deg, #0f766e 0%, #0d9488 50%, #14b8a6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.section-subtitle {
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+.heading-font {
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+}
+
+/* Rewards page: responsive, dynamic background */
+.rewards-page-bg {
+  background: linear-gradient(165deg, #f0fdfa 0%, #ecfeff 25%, #f0fdf4 50%, #f8faf8 75%, #f1f5f9 100%);
+  background-attachment: fixed;
+}
+
+@media (min-width: 640px) {
+  .rewards-page-bg {
+    background: linear-gradient(160deg, #ecfeff 0%, #f0fdfa 20%, #ccfbf1 40%, #f0fdf4 60%, #f8faf8 80%, #f1f5f9 100%);
+    background-attachment: fixed;
+  }
+}
+
+@media (min-width: 1024px) {
+  .rewards-page-bg {
+    background: linear-gradient(155deg, #e0f2fe 0%, #ecfeff 15%, #f0fdfa 35%, #ccfbf1 55%, #f0fdf4 75%, #f8faf8 90%, #f1f5f9 100%);
+    background-attachment: fixed;
+  }
+}
