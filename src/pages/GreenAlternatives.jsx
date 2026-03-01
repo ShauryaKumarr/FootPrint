@@ -7,7 +7,7 @@ const PRELOADED = [
       store: 'Grocery Store',
       price: 15.99,
       impact: 0,
-      imageUrl: 'https://images.unsplash.com/photo-1550505095-81378a674395?auto=format&fit=crop&w=500&q=60',
+      imageUrl: 'https://images.unsplash.com/photo-1617150119111-09bbb85178b0?auto=format&fit=crop&w=500&q=60',
       productUrl: 'https://www.amazon.com/dp/B08J5F45N1',
     },
     alternatives: [
@@ -18,7 +18,7 @@ const PRELOADED = [
         donated: 4.50,
         charity: 'Surfrider Foundation',
         coins: 40,
-        imageUrl: 'https://images.unsplash.com/photo-1602143407151-011141950038?auto=format&fit=crop&w=500&q=60',
+        imageUrl: 'https://images.unsplash.com/photo-1589365278144-c9e705f843ba?auto=format&fit=crop&w=500&q=60',
         productUrl: 'https://www.amazon.com/dp/B0BG6NRL86',
       },
       {
@@ -159,7 +159,7 @@ const PRELOADED = [
       store: 'Party City',
       price: 5.99,
       impact: 0,
-      imageUrl: 'https://images.unsplash.com/photo-1585659722983-3a675dabf23d?auto=format&fit=crop&w=500&q=60',
+      imageUrl: 'https://images.unsplash.com/photo-1584346133934-a3afd2a33c4c?auto=format&fit=crop&w=500&q=60',
       productUrl: '#',
     },
     alternatives: [
@@ -169,7 +169,7 @@ const PRELOADED = [
         donated: 1.30,
         charity: 'Plastic Pollution Coalition',
         coins: 15,
-        imageUrl: 'https://images.unsplash.com/photo-1584346133934-a3afd2a5d522?auto=format&fit=crop&w=500&q=60',
+        imageUrl: 'https://images.unsplash.com/photo-1616400619175-5beda3a17896?auto=format&fit=crop&w=500&q=60',
         productUrl: 'https://togoware.com/',
       },
       {
@@ -178,7 +178,7 @@ const PRELOADED = [
         donated: 1.10,
         charity: 'Leave No Trace',
         coins: 10,
-        imageUrl: 'https://images.unsplash.com/photo-1624821588855-a5ff3945e928?auto=format&fit=crop&w=500&q=60',
+        imageUrl: 'https://images.unsplash.com/photo-1595981267035-7b04ca84a82d?auto=format&fit=crop&w=500&q=60',
         productUrl: 'https://snowpeak.com/',
       },
     ],
@@ -191,13 +191,40 @@ export default function GreenAlternatives() {
   const [searchHistory, setSearchHistory] = useState([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
+  const [isHovered, setIsHovered] = useState(false)
   const scrollContainerRef = useRef(null)
 
+  // Create a larger list for infinite scroll (4 sets of the original data)
+  const carouselItems = [...PRELOADED, ...PRELOADED, ...PRELOADED, ...PRELOADED]
+
   useEffect(() => {
-    if (scrollContainerRef.current) {
-      scrollContainerRef.current.scrollLeft = 350;
+    const scrollContainer = scrollContainerRef.current
+    if (!scrollContainer) return
+
+    let animationFrameId
+
+    const animate = () => {
+      // Calculate the width of one set of items (approx 1/4 of total width)
+      const oneSetWidth = scrollContainer.scrollWidth / 4
+
+      // Auto scroll if not hovered
+      if (!isHovered) {
+        scrollContainer.scrollLeft += 1
+      }
+
+      // Infinite loop logic: Jump back/forward seamlessly
+      if (scrollContainer.scrollLeft >= oneSetWidth * 3) {
+        scrollContainer.scrollLeft -= oneSetWidth
+      } else if (scrollContainer.scrollLeft <= 0) {
+        scrollContainer.scrollLeft += oneSetWidth
+      }
+
+      animationFrameId = requestAnimationFrame(animate)
     }
-  }, [])
+
+    animationFrameId = requestAnimationFrame(animate)
+    return () => cancelAnimationFrame(animationFrameId)
+  }, [isHovered])
 
   const scroll = (direction) => {
     if (scrollContainerRef.current) {
@@ -317,17 +344,21 @@ export default function GreenAlternatives() {
       >
         Browse Popular Products
       </h3>
-      <div className="relative group">
+      <div 
+        className="relative group"
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
         {/* Scroll Buttons */}
         <ScrollButton direction="left" onClick={() => scroll('left')} className="-ml-20" />
         <ScrollButton direction="right" onClick={() => scroll('right')} className="-mr-20" />
 
         <div
           ref={scrollContainerRef}
-          className="flex overflow-x-auto gap-6 pb-8 -mx-48 px-48 snap-x scroll-smooth items-start [&::-webkit-scrollbar]:hidden"
+          className="flex overflow-x-auto gap-6 pb-8 -mx-48 px-48 items-start [&::-webkit-scrollbar]:hidden"
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         >
-          {PRELOADED.map((p, i) => (
+          {carouselItems.map((p, i) => (
             <CarouselCard key={i} product={p} />
           ))}
         </div>
