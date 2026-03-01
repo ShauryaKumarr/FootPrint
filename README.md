@@ -104,6 +104,7 @@ Meet the team behind FootPrint:
           cagrawal@udel.edu
       </td>
       <td align="center">
+        <img src="src/assets/aarush.png" width="150" height="150" style="border-radius:50%; object-fit:cover;" alt="Aarush Goyal">
         <p><strong>Aarush Goyal</strong></p>
         <a href="https://www.linkedin.com/in/aarushgoyal/">
           <img src="https://img.shields.io/badge/LinkedIn-Connect-blue?style=flat-square&logo=linkedin" alt="LinkedIn">
