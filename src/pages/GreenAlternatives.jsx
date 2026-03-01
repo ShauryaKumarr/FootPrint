@@ -166,45 +166,47 @@ export default function GreenAlternatives() {
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-12">
-      <h1 className="text-3xl font-bold text-gray-900 mb-2">Green Alternatives</h1>
-      <p className="text-gray-500 mb-8">
+      <h1
+        className="text-3xl text-[#0B3D2E] mb-2"
+        style={{ fontFamily: "'DM Serif Display', Georgia, serif" }}
+      >
+        Green Alternatives
+      </h1>
+      <p className="text-[#4A5568] mb-8">
         Paste a product link or browse categories to find sustainable alternatives that earn you FutureCoins.
       </p>
 
-      {/* Link input */}
-      <div className="bg-white rounded-2xl border border-gray-200 p-6 mb-8">
-        <h3 className="text-lg font-semibold text-gray-900 mb-3">Paste a Product Link</h3>
+      <div className="fc-card p-6 mb-8">
+        <h3 className="text-lg font-semibold text-[#0B3D2E] mb-3">Paste a Product Link</h3>
         <div className="flex gap-3">
           <input
             type="text"
             value={linkInput}
             onChange={(e) => setLinkInput(e.target.value)}
             placeholder="https://amazon.com/dp/..."
-            className="flex-1 px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-300 focus:border-green-400"
+            className="flex-1 px-4 py-3 rounded-xl border border-[#E8E4DF] bg-[#FFF5EB] text-[#0B3D2E] placeholder-[#4A5568]/40 focus:outline-none focus:ring-2 focus:ring-[#0B3D2E]/20 focus:border-[#0B3D2E]/40"
           />
           <button
             onClick={handleSearch}
             disabled={loading}
-            className="px-6 py-3 bg-green-600 text-white font-semibold rounded-xl hover:bg-green-700 transition-colors whitespace-nowrap disabled:bg-green-400"
+            className="fc-btn whitespace-nowrap disabled:opacity-50"
           >
             {loading ? 'Searching...' : 'Find Alternatives'}
           </button>
         </div>
       </div>
 
-      {/* Error message display */}
       {error && (
-        <div className="bg-red-100 border border-red-200 text-red-700 text-sm font-semibold rounded-xl p-4 mb-8">
+        <div className="bg-red-50 border border-red-200 text-red-700 text-sm font-semibold rounded-xl p-4 mb-8">
           {error}
         </div>
       )}
 
-      {/* Search History */}
       {searchHistory.length > 0 && (
         <div className="mb-8">
           <div className="flex items-center justify-between mb-3">
-            <h3 className="text-lg font-semibold text-gray-900">Recent Searches</h3>
-            <button onClick={() => setSearchHistory([])} className="text-sm text-gray-400 hover:text-red-500 transition-colors">
+            <h3 className="text-lg font-semibold text-[#0B3D2E]">Recent Searches</h3>
+            <button onClick={() => setSearchHistory([])} className="text-sm text-[#4A5568] hover:text-red-500 transition-colors">
               Clear
             </button>
           </div>
@@ -213,12 +215,12 @@ export default function GreenAlternatives() {
               <button
                 key={i}
                 onClick={() => setActiveProduct(item)}
-                className="flex items-center gap-3 p-3 bg-white rounded-xl border border-gray-200 hover:border-green-300 transition-all text-left group"
+                className="flex items-center gap-3 p-3 fc-card hover:border-[#0B3D2E]/30 transition-all text-left group"
               >
                 <img src={item.original.imageUrl} alt={item.original.name} className="w-12 h-12 rounded-lg object-cover" />
                 <div className="min-w-0">
-                  <p className="font-medium text-gray-900 text-sm truncate group-hover:text-green-700 transition-colors">{item.original.name}</p>
-                  <p className="text-xs text-gray-500">{item.alternatives.length} alternatives found</p>
+                  <p className="font-medium text-[#0B3D2E] text-sm truncate group-hover:opacity-70 transition-opacity">{item.original.name}</p>
+                  <p className="text-xs text-[#4A5568]">{item.alternatives.length} alternatives found</p>
                 </div>
               </button>
             ))}
@@ -226,25 +228,28 @@ export default function GreenAlternatives() {
         </div>
       )}
 
-      {/* Comparison view */}
       {activeProduct && (
         <ComparisonCard product={activeProduct} onClose={() => setActiveProduct(null)} />
       )}
 
-      {/* Preloaded browse */}
-      <h3 className="text-xl font-bold text-gray-900 mb-4">Browse Popular Products</h3>
+      <h3
+        className="text-xl text-[#0B3D2E] mb-4"
+        style={{ fontFamily: "'DM Serif Display', Georgia, serif" }}
+      >
+        Browse Popular Products
+      </h3>
       <div className="grid gap-4">
         {PRELOADED.map((p, i) => (
           <button
             key={i}
             onClick={() => setActiveProduct(p)}
-            className="bg-white rounded-2xl border border-gray-200 p-5 text-left hover:border-green-300 hover:shadow-sm transition-all flex items-center justify-between"
+            className="fc-card p-5 text-left hover:border-[#0B3D2E]/30 hover:shadow-sm transition-all flex items-center justify-between"
           >
             <div>
-              <p className="font-semibold text-gray-900">{p.original.name}</p>
-              <p className="text-sm text-gray-500">{p.original.store} — ${p.original.price.toFixed(2)}</p>
+              <p className="font-semibold text-[#0B3D2E]">{p.original.name}</p>
+              <p className="text-sm text-[#4A5568]">{p.original.store} — ${p.original.price.toFixed(2)}</p>
             </div>
-            <span className="text-green-600 font-medium text-sm">
+            <span className="text-[#0B3D2E] font-medium text-sm">
               {p.alternatives.length} alternatives &rarr;
             </span>
           </button>
@@ -256,35 +261,33 @@ export default function GreenAlternatives() {
 
 function ComparisonCard({ product, onClose }) {
   return (
-    <div className="bg-white rounded-2xl border-2 border-green-200 p-6 mb-8">
+    <div className="fc-card border-2 border-[#0B3D2E]/20 p-6 mb-8">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-semibold text-gray-900">Side-by-Side Comparison</h3>
-        <button onClick={onClose} className="text-gray-400 hover:text-gray-600 text-xl">&times;</button>
+        <h3 className="text-lg font-semibold text-[#0B3D2E]">Side-by-Side Comparison</h3>
+        <button onClick={onClose} className="text-[#4A5568] hover:text-[#0B3D2E] text-xl">&times;</button>
       </div>
 
       <div className="grid md:grid-cols-3 gap-4">
-        {/* Original Product */}
         {product.original && (
           <a href={product.original.productUrl} target="_blank" rel="noopener noreferrer" className="block rounded-xl border border-red-200 bg-red-50/50 p-4 hover:border-red-300 transition-colors">
             <img src={product.original.imageUrl} alt={product.original.name} className="w-full h-32 object-cover rounded-lg mb-3" />
             <p className="text-xs font-bold text-red-500 uppercase mb-2">Original</p>
-            <p className="font-semibold text-gray-900">{product.original.name}</p>
-            <p className="text-sm text-gray-500 mb-3">{product.original.store}</p>
-            <p className="text-xl font-bold text-gray-900">${product.original.price.toFixed(2)}</p>
-            <p className="text-xs text-red-500 mt-2">0 green impact • 0 FutureCoins</p>
+            <p className="font-semibold text-[#0B3D2E]">{product.original.name}</p>
+            <p className="text-sm text-[#4A5568] mb-3">{product.original.store}</p>
+            <p className="text-xl font-bold text-[#0B3D2E]">${product.original.price.toFixed(2)}</p>
+            <p className="text-xs text-red-500 mt-2">0 green impact &bull; 0 FutureCoins</p>
           </a>
         )}
 
-        {/* Alternative Products */}
         {product.alternatives && product.alternatives.map((alt, i) => (
-          <a key={i} href={alt.productUrl} target="_blank" rel="noopener noreferrer" className="block rounded-xl border border-green-200 bg-green-50/50 p-4 hover:border-green-300 transition-colors">
+          <a key={i} href={alt.productUrl} target="_blank" rel="noopener noreferrer" className="block rounded-xl border border-[#C5E867] bg-[#C5E867]/10 p-4 hover:border-[#0B3D2E]/30 transition-colors">
             <img src={alt.imageUrl} alt={alt.name} className="w-full h-32 object-cover rounded-lg mb-3" />
-            <p className="text-xs font-bold text-green-600 uppercase mb-2">Alternative</p>
-            <p className="font-semibold text-gray-900">{alt.name}</p>
-            <p className="text-sm text-gray-500 mb-3">{alt.store}</p>
-            <p className="text-xl font-bold text-gray-900">${alt.price.toFixed(2)}</p>
-            <p className="text-xs text-green-600 mt-2">
-              ${alt.donated.toFixed(2)} → {alt.charity} • +{alt.coins} FutureCoins
+            <p className="text-xs font-bold text-[#0B3D2E] uppercase mb-2">Alternative</p>
+            <p className="font-semibold text-[#0B3D2E]">{alt.name}</p>
+            <p className="text-sm text-[#4A5568] mb-3">{alt.store}</p>
+            <p className="text-xl font-bold text-[#0B3D2E]">${alt.price.toFixed(2)}</p>
+            <p className="text-xs text-[#0B3D2E]/70 mt-2">
+              ${alt.donated.toFixed(2)} &rarr; {alt.charity} &bull; +{alt.coins} FutureCoins
             </p>
           </a>
         ))}
