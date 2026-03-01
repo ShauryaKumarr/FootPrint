@@ -7,12 +7,12 @@ import { useProfile } from '../context/ProfileContext'
 const API_BASE = 'http://localhost:3001'
 
 const SECTOR_META = {
-  Transport: { icon: '✈️', color: 'bg-red-400',    text: 'text-red-600' },
-  Food:      { icon: '🍔', color: 'bg-orange-400', text: 'text-orange-600' },
-  Fashion:   { icon: '👗', color: 'bg-yellow-400', text: 'text-yellow-600' },
-  Energy:    { icon: '⚡', color: 'bg-blue-400',   text: 'text-blue-600' },
-  Shopping:  { icon: '🛒', color: 'bg-purple-400', text: 'text-purple-600' },
-  Other:     { icon: '📦', color: 'bg-gray-400',   text: 'text-gray-600' },
+  Transport: { icon: '✈️', color: 'bg-[#0B3D2E]',   text: 'text-[#0B3D2E]' },
+  Food:      { icon: '🍔', color: 'bg-[#0B3D2E]/80', text: 'text-[#0B3D2E]' },
+  Fashion:   { icon: '👗', color: 'bg-[#C5E867]',     text: 'text-[#0B3D2E]' },
+  Energy:    { icon: '⚡', color: 'bg-[#0B3D2E]/60', text: 'text-[#0B3D2E]' },
+  Shopping:  { icon: '🛒', color: 'bg-[#C5E867]/80',  text: 'text-[#0B3D2E]' },
+  Other:     { icon: '📦', color: 'bg-[#4A5568]',     text: 'text-[#4A5568]' },
 }
 
 export default function CarbonProfile() {
@@ -80,15 +80,25 @@ export default function CarbonProfile() {
   if (!connected || !summary) {
     return (
       <div className="max-w-4xl mx-auto px-4 py-12">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Carbon Profile</h1>
-        <p className="text-gray-500 mb-8">
+        <h1
+          className="text-3xl text-[#0B3D2E] mb-2"
+          style={{ fontFamily: "'DM Serif Display', Georgia, serif" }}
+        >
+          Carbon Profile
+        </h1>
+        <p className="text-[#4A5568] mb-8">
           Connect your bank account to auto-categorize every purchase and estimate its carbon footprint.
         </p>
 
-        <div className="bg-white rounded-2xl border border-gray-200 p-10 text-center mb-6">
+        <div className="fc-card p-10 text-center mb-6">
           <div className="text-6xl mb-5">🏦</div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">Connect Your Bank</h2>
-          <p className="text-gray-500 mb-8 max-w-md mx-auto">
+          <h2
+            className="text-2xl text-[#0B3D2E] mb-2"
+            style={{ fontFamily: "'DM Serif Display', Georgia, serif" }}
+          >
+            Connect Your Bank
+          </h2>
+          <p className="text-[#4A5568] mb-8 max-w-md mx-auto">
             Link your bank account via Plaid to import the last 30 days of transactions.
             We&apos;ll score every purchase for its carbon impact.
           </p>
@@ -97,32 +107,32 @@ export default function CarbonProfile() {
             <button
               onClick={() => openPlaid()}
               disabled={!plaidReady || loading}
-              className="px-8 py-3.5 bg-green-600 text-white font-semibold rounded-xl hover:bg-green-700 transition-colors shadow-lg shadow-green-200 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="fc-btn disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? 'Connecting...' : '🔗 Connect with Plaid'}
             </button>
             <button
               onClick={loadDemo}
-              className="px-8 py-3.5 bg-white text-gray-700 font-semibold rounded-xl border border-gray-200 hover:bg-gray-50 transition-colors"
+              className="fc-btn-outline"
             >
               🎮 Try Demo Mode
             </button>
           </div>
 
           {!linkToken && (
-            <p className="mt-4 text-xs text-gray-400">
-              Plaid server not detected — use Demo Mode to explore, or start the backend with <code className="bg-gray-100 px-1.5 py-0.5 rounded">npm run server</code>
+            <p className="mt-4 text-xs text-[#4A5568]/60">
+              Plaid server not detected — use Demo Mode to explore, or start the backend with <code className="bg-[#FFF5EB] px-1.5 py-0.5 rounded text-[#0B3D2E]">npm run server</code>
             </p>
           )}
 
           {error && <p className="mt-4 text-sm text-red-500">{error}</p>}
         </div>
 
-        <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-2xl p-6 text-center">
-          <p className="text-sm text-gray-600">
+        <div className="fc-card-lime p-6 text-center">
+          <p className="text-sm text-[#0B3D2E]/80">
             <strong>Sandbox mode:</strong> Use credentials{' '}
-            <code className="bg-white px-1.5 py-0.5 rounded text-green-700">user_good</code> /{' '}
-            <code className="bg-white px-1.5 py-0.5 rounded text-green-700">pass_good</code> in the Plaid modal.
+            <code className="bg-white/50 px-1.5 py-0.5 rounded text-[#0B3D2E]">user_good</code> /{' '}
+            <code className="bg-white/50 px-1.5 py-0.5 rounded text-[#0B3D2E]">pass_good</code> in the Plaid modal.
             No real bank data is used.
           </p>
         </div>
@@ -137,29 +147,32 @@ export default function CarbonProfile() {
   const filteredTxns = filter === 'all' ? scored : scored.filter(t => t.sector === filter)
 
   const overallGrade = summary.greenPct >= 70 ? 'A' : summary.greenPct >= 50 ? 'B' : summary.greenPct >= 30 ? 'C' : summary.greenPct >= 15 ? 'D' : 'F'
-  const overallGradeColors = { A: 'from-green-500 to-emerald-500', B: 'from-emerald-500 to-teal-500', C: 'from-yellow-500 to-amber-500', D: 'from-orange-500 to-red-400', F: 'from-red-500 to-red-700' }
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-10">
-      {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Carbon Profile</h1>
-          <p className="text-gray-500 mt-1">
+          <h1
+            className="text-3xl text-[#0B3D2E]"
+            style={{ fontFamily: "'DM Serif Display', Georgia, serif" }}
+          >
+            Carbon Profile
+          </h1>
+          <p className="text-[#4A5568] mt-1">
             {mode === 'demo' ? '🎮 Demo mode' : '🔗 Connected via Plaid'} — {summary.count} transactions scored
           </p>
         </div>
-        <button onClick={disconnect} className="text-sm text-gray-400 hover:text-gray-600 transition-colors">
+        <button onClick={disconnect} className="text-sm text-[#4A5568] hover:text-[#0B3D2E] transition-colors">
           Disconnect
         </button>
       </div>
 
-      {/* Top row: Overall grade + summary cards */}
+      {/* Top row: grade + summary */}
       <div className="grid sm:grid-cols-5 gap-4 mb-8">
-        <div className={`sm:col-span-1 rounded-2xl p-5 bg-gradient-to-br ${overallGradeColors[overallGrade]} text-white flex flex-col items-center justify-center`}>
-          <p className="text-xs uppercase tracking-wider opacity-80 mb-1">Overall</p>
+        <div className="sm:col-span-1 rounded-2xl p-5 bg-[#0B3D2E] text-white flex flex-col items-center justify-center">
+          <p className="text-xs uppercase tracking-wider opacity-70 mb-1">Overall</p>
           <p className="text-5xl font-black">{overallGrade}</p>
-          <p className="text-xs opacity-80 mt-1">{summary.greenPct}% green</p>
+          <p className="text-xs opacity-70 mt-1">{summary.greenPct}% green</p>
         </div>
         <SummaryCard
           label="Total Spend"
@@ -189,22 +202,22 @@ export default function CarbonProfile() {
       </div>
 
       {/* Monthly Carbon Budget */}
-      <div className={`rounded-2xl border p-6 mb-8 ${budget.status === 'over' ? 'bg-red-50 border-red-200' : 'bg-white border-gray-200'}`}>
+      <div className={`fc-card p-6 mb-8 ${budget.status === 'over' ? '!border-red-200 !bg-red-50' : ''}`}>
         <div className="flex items-center justify-between mb-3">
-          <h3 className="text-lg font-semibold text-gray-900">Monthly Carbon Budget</h3>
-          <span className={`text-sm font-bold ${budget.color}`}>
+          <h3 className="text-lg font-semibold text-[#0B3D2E]">Monthly Carbon Budget</h3>
+          <span className={`text-sm font-bold ${budget.status === 'over' ? 'text-red-600' : 'text-[#0B3D2E]'}`}>
             {Math.round(summary.totalCO2)} / {MONTHLY_BUDGET_KG} kg CO₂
             {budget.pct > 100 && ` (${budget.pct}%)`}
           </span>
         </div>
-        <div className="w-full bg-gray-100 rounded-full h-5 overflow-hidden mb-2">
+        <div className="w-full bg-[#E8E4DF] rounded-full h-5 overflow-hidden mb-2">
           <div
-            className={`h-full rounded-full ${budget.barColor} transition-all duration-1000`}
+            className={`h-full rounded-full transition-all duration-1000 ${budget.status === 'over' ? 'bg-red-500' : 'bg-[#0B3D2E]'}`}
             style={{ width: `${Math.min(budget.pct, 100)}%` }}
           />
         </div>
         <div className="flex items-center justify-between">
-          <p className={`text-sm font-medium ${budget.color}`}>{budget.message}</p>
+          <p className={`text-sm font-medium ${budget.status === 'over' ? 'text-red-600' : 'text-[#0B3D2E]'}`}>{budget.message}</p>
           {budget.status === 'over' && (
             <span className="text-xs bg-red-100 text-red-700 px-2.5 py-1 rounded-full font-semibold">
               {Math.round(summary.totalCO2 - MONTHLY_BUDGET_KG)} kg over
@@ -213,12 +226,12 @@ export default function CarbonProfile() {
         </div>
       </div>
 
-      {/* Sector breakdown + Grade distribution */}
+      {/* Sector breakdown + Grades */}
       <div className="grid lg:grid-cols-2 gap-6 mb-8">
-        <div className="bg-white rounded-2xl border border-gray-200 p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Breakdown by Sector</h3>
+        <div className="fc-card p-6">
+          <h3 className="text-lg font-semibold text-[#0B3D2E] mb-4">Breakdown by Sector</h3>
           {sectorEntries.length === 0 ? (
-            <p className="text-gray-400 text-sm italic">No categorized transactions</p>
+            <p className="text-[#4A5568] text-sm italic">No categorized transactions</p>
           ) : (
             <div className="space-y-4">
               {sectorEntries.map(([sector, data]) => {
@@ -229,21 +242,21 @@ export default function CarbonProfile() {
                     <div className="flex items-center justify-between mb-1.5">
                       <div className="flex items-center gap-2">
                         <span className="text-lg">{meta.icon}</span>
-                        <span className="text-sm font-semibold text-gray-800">{sector}</span>
-                        <span className="text-xs text-gray-400">({data.count} txn{data.count !== 1 ? 's' : ''})</span>
+                        <span className="text-sm font-semibold text-[#0B3D2E]">{sector}</span>
+                        <span className="text-xs text-[#4A5568]">({data.count} txn{data.count !== 1 ? 's' : ''})</span>
                       </div>
                       <div className="text-right">
-                        <span className="text-sm font-bold text-gray-700">{Math.round(data.co2)} kg</span>
-                        <span className="text-xs text-gray-400 ml-1">({pct}%)</span>
+                        <span className="text-sm font-bold text-[#0B3D2E]">{Math.round(data.co2)} kg</span>
+                        <span className="text-xs text-[#4A5568] ml-1">({pct}%)</span>
                       </div>
                     </div>
-                    <div className="w-full bg-gray-100 rounded-full h-2.5 overflow-hidden">
+                    <div className="w-full bg-[#E8E4DF] rounded-full h-2.5 overflow-hidden">
                       <div
                         className={`h-full rounded-full ${meta.color} transition-all duration-700`}
                         style={{ width: `${pct}%` }}
                       />
                     </div>
-                    <p className="text-xs text-gray-400 mt-1">
+                    <p className="text-xs text-[#4A5568] mt-1">
                       ${data.spend.toFixed(2)} spent · {(data.co2 / data.spend).toFixed(2)} kg CO₂ per dollar
                     </p>
                   </div>
@@ -253,16 +266,16 @@ export default function CarbonProfile() {
           )}
         </div>
 
-        <div className="bg-white rounded-2xl border border-gray-200 p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Transaction Grades</h3>
+        <div className="fc-card p-6">
+          <h3 className="text-lg font-semibold text-[#0B3D2E] mb-4">Transaction Grades</h3>
           <div className="grid grid-cols-5 gap-3 mb-5">
             {Object.entries(summary.gradeDistribution).map(([grade, count]) => {
               const colors = {
-                A: 'bg-green-100 text-green-700 border-green-200',
-                B: 'bg-emerald-100 text-emerald-700 border-emerald-200',
-                C: 'bg-yellow-100 text-yellow-700 border-yellow-200',
-                D: 'bg-orange-100 text-orange-700 border-orange-200',
-                F: 'bg-red-100 text-red-700 border-red-200',
+                A: 'bg-[#C5E867]/30 text-[#0B3D2E] border-[#C5E867]',
+                B: 'bg-[#C5E867]/20 text-[#0B3D2E] border-[#C5E867]/60',
+                C: 'bg-yellow-50 text-yellow-700 border-yellow-200',
+                D: 'bg-orange-50 text-orange-700 border-orange-200',
+                F: 'bg-red-50 text-red-700 border-red-200',
               }
               const pct = summary.count > 0 ? Math.round((count / summary.count) * 100) : 0
               return (
@@ -274,9 +287,9 @@ export default function CarbonProfile() {
               )
             })}
           </div>
-          <div className="bg-gray-50 rounded-xl p-4">
-            <p className="text-xs font-semibold text-gray-600 mb-2">Grade Scale</p>
-            <div className="grid grid-cols-5 gap-1 text-[10px] text-gray-500 text-center">
+          <div className="bg-[#FFF5EB] rounded-xl p-4">
+            <p className="text-xs font-semibold text-[#0B3D2E] mb-2">Grade Scale</p>
+            <div className="grid grid-cols-5 gap-1 text-[10px] text-[#4A5568] text-center">
               <span>≤1 kg</span><span>≤3 kg</span><span>≤8 kg</span><span>≤20 kg</span><span>&gt;20 kg</span>
             </div>
           </div>
@@ -284,12 +297,8 @@ export default function CarbonProfile() {
       </div>
 
       {/* Reduction suggestions */}
-      <div className={`rounded-2xl border p-6 mb-8 ${
-        budget.status === 'over'
-          ? 'bg-gradient-to-r from-red-50 to-orange-50 border-red-200'
-          : 'bg-gradient-to-r from-green-50 to-emerald-50 border-green-200'
-      }`}>
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">
+      <div className={`fc-card p-6 mb-8 ${budget.status === 'over' ? '!border-red-200 !bg-red-50' : ''}`}>
+        <h3 className="text-lg font-semibold text-[#0B3D2E] mb-4">
           {budget.status === 'over' ? '🚨 Action Needed — Reduce Your Footprint' : '💡 Tips to Reduce Your Footprint'}
         </h3>
         <div className="grid sm:grid-cols-2 gap-3">
@@ -299,18 +308,18 @@ export default function CarbonProfile() {
               className={`rounded-xl p-4 border ${
                 r.urgent
                   ? 'bg-white border-red-200 ring-1 ring-red-100'
-                  : 'bg-white border-green-100'
+                  : 'bg-white border-[#E8E4DF]'
               }`}
             >
               <div className="flex items-start gap-3">
                 <span className="text-2xl shrink-0">{r.icon}</span>
                 <div>
-                  <h4 className="font-semibold text-gray-900 text-sm">{r.title}</h4>
-                  <p className={`text-xs mt-1 ${r.urgent ? 'text-red-600 font-medium' : 'text-green-700'}`}>
+                  <h4 className="font-semibold text-[#0B3D2E] text-sm">{r.title}</h4>
+                  <p className={`text-xs mt-1 ${r.urgent ? 'text-red-600 font-medium' : 'text-[#0B3D2E]/70'}`}>
                     {r.impact}
                   </p>
                   {r.sector !== 'Critical' && r.sector !== 'Warning' && (
-                    <span className="inline-block mt-2 text-[10px] font-semibold uppercase tracking-wider text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">
+                    <span className="inline-block mt-2 text-[10px] font-semibold uppercase tracking-wider text-[#4A5568] bg-[#FFF5EB] px-2 py-0.5 rounded-full">
                       {r.sector}
                     </span>
                   )}
@@ -321,15 +330,14 @@ export default function CarbonProfile() {
         </div>
       </div>
 
-      {/* Transaction list with sector filter */}
-      <div className="bg-white rounded-2xl border border-gray-200 p-6">
+      {/* Transaction list */}
+      <div className="fc-card p-6">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-gray-900">
-            Transactions <span className="text-gray-400 font-normal">({filteredTxns.length})</span>
+          <h3 className="text-lg font-semibold text-[#0B3D2E]">
+            Transactions <span className="text-[#4A5568] font-normal">({filteredTxns.length})</span>
           </h3>
         </div>
 
-        {/* Sector filter pills */}
         <div className="flex flex-wrap gap-2 mb-4">
           {sectors.map((s) => (
             <button
@@ -337,8 +345,8 @@ export default function CarbonProfile() {
               onClick={() => setFilter(s)}
               className={`px-3 py-1.5 text-xs font-medium rounded-full transition-colors ${
                 filter === s
-                  ? 'bg-green-600 text-white'
-                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                  ? 'bg-[#0B3D2E] text-white'
+                  : 'bg-[#FFF5EB] text-[#4A5568] hover:bg-[#E8E4DF]'
               }`}
             >
               {s === 'all' ? 'All' : `${SECTOR_META[s]?.icon || '📦'} ${s}`}
@@ -350,27 +358,27 @@ export default function CarbonProfile() {
           {filteredTxns.map((t) => (
             <div
               key={t.transaction_id}
-              className="flex items-center justify-between p-3 rounded-xl hover:bg-gray-50 transition-colors"
+              className="flex items-center justify-between p-3 rounded-xl hover:bg-[#FFF5EB] transition-colors"
             >
               <div className="flex items-center gap-3 min-w-0">
                 <span className={`inline-flex items-center justify-center w-10 h-10 rounded-lg text-sm font-bold shrink-0 ${t.bg} ${t.color}`}>
                   {t.grade}
                 </span>
                 <div className="min-w-0">
-                  <p className="font-medium text-gray-900 truncate">{t.name}</p>
-                  <p className="text-xs text-gray-400">
-                    {t.date} · <span className={SECTOR_META[t.sector]?.text || 'text-gray-500'}>{t.sector}</span>
+                  <p className="font-medium text-[#0B3D2E] truncate">{t.name}</p>
+                  <p className="text-xs text-[#4A5568]">
+                    {t.date} · <span className={SECTOR_META[t.sector]?.text || 'text-[#4A5568]'}>{t.sector}</span>
                   </p>
                 </div>
               </div>
               <div className="text-right ml-4 shrink-0">
-                <p className="font-semibold text-gray-900">${t.amount.toFixed(2)}</p>
+                <p className="font-semibold text-[#0B3D2E]">${t.amount.toFixed(2)}</p>
                 <p className={`text-xs font-bold ${t.color}`}>{t.kgCO2} kg CO₂</p>
               </div>
             </div>
           ))}
           {filteredTxns.length === 0 && (
-            <p className="text-gray-400 text-sm italic text-center py-8">No transactions in this sector</p>
+            <p className="text-[#4A5568] text-sm italic text-center py-8">No transactions in this sector</p>
           )}
         </div>
       </div>
@@ -378,17 +386,15 @@ export default function CarbonProfile() {
   )
 }
 
-function SummaryCard({ label, value, subtitle, icon, accent, alert }) {
+function SummaryCard({ label, value, subtitle, icon, alert }) {
   return (
-    <div className={`rounded-2xl p-5 border ${
-      alert ? 'bg-red-50 border-red-200' : accent ? 'bg-green-50 border-green-200' : 'bg-white border-gray-200'
-    }`}>
+    <div className={`fc-card p-5 ${alert ? '!border-red-200 !bg-red-50' : ''}`}>
       <div className="flex items-center justify-between mb-2">
-        <p className="text-sm text-gray-500">{label}</p>
+        <p className="text-sm text-[#4A5568]">{label}</p>
         {icon && <span className="text-lg">{icon}</span>}
       </div>
-      <p className={`text-2xl font-bold ${alert ? 'text-red-700' : accent ? 'text-green-700' : 'text-gray-900'}`}>{value}</p>
-      <p className="text-xs text-gray-400 mt-1">{subtitle}</p>
+      <p className={`text-2xl font-bold ${alert ? 'text-red-700' : 'text-[#0B3D2E]'}`}>{value}</p>
+      <p className="text-xs text-[#4A5568] mt-1">{subtitle}</p>
     </div>
   )
 }

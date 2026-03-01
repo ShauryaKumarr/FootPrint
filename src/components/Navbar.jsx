@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 
 const links = [
@@ -8,25 +9,32 @@ const links = [
   { to: '/alternatives', label: 'Green Alternatives' },
 ]
 
+const FUTURECARD_URL = 'https://www.futurecard.co/futurecard'
+
 export default function Navbar() {
+  const [open, setOpen] = useState(false)
+
   return (
-    <nav className="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-green-100 shadow-sm">
+    <nav className="sticky top-0 z-50 bg-[#FFF5EB]/80 backdrop-blur-md border-b border-[#E8E4DF]">
       <div className="max-w-6xl mx-auto px-4 flex items-center justify-between h-16">
-        <NavLink to="/" className="flex items-center gap-2 text-xl font-bold text-green-700">
-          <span className="text-2xl">🐾</span>
+        <NavLink
+          to="/"
+          className="text-2xl text-[#0B3D2E] hover:opacity-70 transition-opacity shrink-0"
+          style={{ fontFamily: "'DM Serif Display', Georgia, serif" }}
+        >
           FootPrint
         </NavLink>
 
-        <div className="hidden md:flex items-center gap-1">
+        <div className="hidden md:flex items-center gap-8">
           {links.map(({ to, label }) => (
             <NavLink
               key={to}
               to={to}
               className={({ isActive }) =>
-                `px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                `text-sm font-medium transition-colors ${
                   isActive
-                    ? 'bg-green-100 text-green-800'
-                    : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+                    ? 'text-[#0B3D2E]'
+                    : 'text-[#4A5568] hover:text-[#0B3D2E]'
                 }`
               }
             >
@@ -35,37 +43,58 @@ export default function Navbar() {
           ))}
         </div>
 
-        <MobileMenu />
-      </div>
-    </nav>
-  )
-}
-
-function MobileMenu() {
-  return (
-    <details className="md:hidden relative">
-      <summary className="list-none cursor-pointer p-2 rounded-lg hover:bg-gray-100">
-        <svg className="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-        </svg>
-      </summary>
-      <div className="absolute right-0 top-12 bg-white border border-gray-200 rounded-xl shadow-xl py-2 w-56">
-        {links.map(({ to, label }) => (
-          <NavLink
-            key={to}
-            to={to}
-            className={({ isActive }) =>
-              `block px-4 py-2.5 text-sm font-medium transition-colors ${
-                isActive
-                  ? 'bg-green-50 text-green-800'
-                  : 'text-gray-600 hover:bg-gray-50'
-              }`
-            }
+        <div className="hidden md:block">
+          <a
+            href={FUTURECARD_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="fc-btn text-sm !py-2.5 !px-6"
           >
-            {label}
-          </NavLink>
-        ))}
+            Join Now
+          </a>
+        </div>
+
+        <button
+          onClick={() => setOpen(!open)}
+          className="md:hidden p-2 rounded-lg hover:bg-[#0B3D2E]/5 transition-colors"
+          aria-label="Toggle menu"
+        >
+          <svg className="w-6 h-6 text-[#0B3D2E]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            {open ? (
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            ) : (
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+            )}
+          </svg>
+        </button>
       </div>
-    </details>
+
+      {open && (
+        <div className="md:hidden border-t border-[#E8E4DF] bg-[#FFF5EB] px-4 pb-4 pt-2">
+          {links.map(({ to, label }) => (
+            <NavLink
+              key={to}
+              to={to}
+              onClick={() => setOpen(false)}
+              className={({ isActive }) =>
+                `block py-3 text-sm font-medium border-b border-[#E8E4DF] last:border-0 transition-colors ${
+                  isActive ? 'text-[#0B3D2E]' : 'text-[#4A5568]'
+                }`
+              }
+            >
+              {label}
+            </NavLink>
+          ))}
+          <a
+            href={FUTURECARD_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="fc-btn text-sm mt-3 w-full"
+          >
+            Join Now
+          </a>
+        </div>
+      )}
+    </nav>
   )
 }
