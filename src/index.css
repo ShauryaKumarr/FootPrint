@@ -78,3 +78,29 @@ body {
   opacity: 0;
   animation: paw-appear var(--paw-duration, 4s) ease-in-out forwards;
 }
+
+.nav-underline {
+  position: relative;
+}
+.nav-underline::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  height: 2px;
+  width: 0;
+  background: #0B3D2E;
+  transition: width 0.3s ease;
+}
+.nav-underline:hover::after,
+.nav-underline.active::after {
+  width: 100%;
+}
+
+.hide-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
