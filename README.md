@@ -80,9 +80,7 @@ Meet the team behind FootPrint:
 
 ![image](https://github.com/user-attachments/assets/68741c6b-f361-4263-bd2e-0353f58daa62)
 
-<div align="center">
-  <img src="src/assets/aarush.png" width="200" alt="Aarush Goyal">
-</div>
+![Aarush Goyal](src/assets/aarush.png)
 <div align="center">
   <table>
     <tr>
