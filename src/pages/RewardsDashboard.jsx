@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useRef, useEffect } from 'react'
 import {
   AreaChart,
   Area,
@@ -11,13 +11,19 @@ import {
 import teslaImg from '../assets/tesla.jpeg'
 import hiltonImg from '../assets/hilton.jpeg'
 import futurecardImg from '../assets/futurecard.jpeg'
-import solarImg from '../assets/solar.jpeg'
 import carbonDividendImg from '../assets/carbon_refund.jpeg'
 import flightImg from '../assets/flight.jpeg'
-import drivingVideo from '../assets/driving.mp4'
+import ecoCarVideo from '../assets/eco_car.mp4'
 import flyingVideo from '../assets/flying.mp4'
+import hotelVideo from '../assets/hotel.mp4'
+import solarVideo from '../assets/solar_panel.mp4'
 
 const monthlyGreenSpending = [
+  { month: 'Jul 2024', amount: 310, points: 155 },
+  { month: 'Aug 2024', amount: 370, points: 185 },
+  { month: 'Sep 2024', amount: 290, points: 145 },
+  { month: 'Oct 2024', amount: 450, points: 225 },
+  { month: 'Nov 2024', amount: 390, points: 195 },
   { month: 'Dec 2024', amount: 420, points: 210 },
   { month: 'Jan 2025', amount: 580, points: 290 },
   { month: 'Feb 2025', amount: 640, points: 320 },
@@ -28,6 +34,7 @@ const TREE_TIER_THRESHOLD = 1500
 const CHART_GRADIENT_ID = 'chartGradient'
 
 const SERIF = "'DM Serif Display', Georgia, serif"
+const AUTO_SCROLL_SPEED = 0.8
 
 function ChartTooltip({ active, payload }) {
   if (!active || !payload?.length) return null
@@ -56,14 +63,31 @@ export default function RewardsDashboard() {
   const currentPoints = 820
   const progress = Math.min(100, Math.round((currentPoints / TREE_TIER_THRESHOLD) * 100))
   const pointsToNextTier = TREE_TIER_THRESHOLD - currentPoints
-  const threeMonthTotal = monthlyGreenSpending.reduce((s, m) => s + m.amount, 0)
-  const threeMonthPoints = monthlyGreenSpending.reduce((s, m) => s + m.points, 0)
+  const totalSpending = monthlyGreenSpending.reduce((s, m) => s + m.amount, 0)
+  const totalPoints = monthlyGreenSpending.reduce((s, m) => s + m.points, 0)
   const carouselRef = useRef(null)
+  const pausedRef = useRef(false)
+  const rafRef = useRef(null)
 
   const scrollCarousel = (dir) => {
     if (!carouselRef.current) return
     carouselRef.current.scrollBy({ left: dir * 340, behavior: 'smooth' })
   }
+
+  useEffect(() => {
+    const tick = () => {
+      const el = carouselRef.current
+      if (el && !pausedRef.current) {
+        el.scrollLeft += AUTO_SCROLL_SPEED
+        if (el.scrollLeft >= el.scrollWidth - el.clientWidth) {
+          el.scrollLeft = 0
+        }
+      }
+      rafRef.current = requestAnimationFrame(tick)
+    }
+    rafRef.current = requestAnimationFrame(tick)
+    return () => cancelAnimationFrame(rafRef.current)
+  }, [])
 
   return (
     <div className="min-h-screen bg-[#FFF5EB]">
@@ -87,9 +111,9 @@ export default function RewardsDashboard() {
               Green spending &amp; tier progress
             </h2>
             <p className="text-sm text-[#4A5568] mb-6">
-              Past 3 months total:{' '}
-              <strong className="text-[#0B3D2E]">${threeMonthTotal.toLocaleString()}</strong> green spending &rarr;{' '}
-              <strong className="text-[#0B3D2E]">{threeMonthPoints} points</strong> earned
+              Past 8 months total:{' '}
+              <strong className="text-[#0B3D2E]">${totalSpending.toLocaleString()}</strong> green spending &rarr;{' '}
+              <strong className="text-[#0B3D2E]">{totalPoints} points</strong> earned
             </p>
             <div className="rounded-xl bg-[#FFF5EB] p-4 sm:p-5 border border-[#E8E4DF]">
               <div className="h-72 sm:h-80 w-full">
@@ -169,7 +193,7 @@ export default function RewardsDashboard() {
           {/* Tesla — with driving video */}
           <div className="group rounded-3xl overflow-hidden cursor-pointer bg-gradient-to-br from-[#e8f0e8] to-white border border-[#E8E4DF] hover:shadow-xl transition-all duration-300">
             <div className="aspect-video bg-[#E8E4DF] overflow-hidden">
-              <video src={drivingVideo} autoPlay muted loop playsInline className="w-full h-full object-cover" />
+              <video src={ecoCarVideo} autoPlay muted loop playsInline className="w-full h-full object-cover" />
             </div>
             <div className="px-6 sm:px-10 py-6 sm:py-8">
               <p className="text-xs font-semibold text-[#0B3D2E]/50 uppercase tracking-wider mb-1">EV purchase</p>
@@ -184,10 +208,10 @@ export default function RewardsDashboard() {
             </div>
           </div>
 
-          {/* Hilton */}
+          {/* Hilton — with hotel video */}
           <div className="group rounded-3xl overflow-hidden cursor-pointer bg-gradient-to-br from-[#eee8df] to-white border border-[#E8E4DF] hover:shadow-xl transition-all duration-300">
             <div className="aspect-video bg-[#E8E4DF] overflow-hidden">
-              <img src={hiltonImg} alt="Hilton New York Midtown" className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-500" />
+              <video src={hotelVideo} autoPlay muted loop playsInline className="w-full h-full object-cover" />
             </div>
             <div className="px-6 sm:px-10 py-6 sm:py-8">
               <p className="text-xs font-semibold text-[#0B3D2E]/50 uppercase tracking-wider mb-1">Upcoming trip</p>
@@ -216,10 +240,10 @@ export default function RewardsDashboard() {
           </p>
 
           <div className="space-y-8">
-            {/* Solar */}
+            {/* Solar — with solar panel video */}
             <div className="group rounded-3xl overflow-hidden cursor-pointer bg-gradient-to-br from-[#2a2a2a] to-[#1f1f1f] border border-white/10 hover:border-white/20 hover:shadow-xl transition-all duration-300">
               <div className="aspect-video bg-white/5 overflow-hidden">
-                <img src={solarImg} alt="Rooftop solar panels" className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-500" />
+                <video src={solarVideo} autoPlay muted loop playsInline className="w-full h-full object-cover" />
               </div>
               <div className="px-6 sm:px-10 py-6 sm:py-8">
                 <p className="text-xs font-semibold text-white/40 uppercase tracking-wider mb-1">Energy</p>
@@ -260,7 +284,7 @@ export default function RewardsDashboard() {
         </div>
       </div>
 
-      {/* ── Real-world impact — horizontal carousel ── */}
+      {/* ── Real-world impact — auto-scrolling carousel ── */}
       <div className="py-20 sm:py-24">
         <div className="max-w-6xl mx-auto px-3 sm:px-6">
           <div className="flex items-end justify-between mb-10">
@@ -298,7 +322,9 @@ export default function RewardsDashboard() {
 
         <div
           ref={carouselRef}
-          className="max-w-6xl mx-auto px-3 sm:px-6 flex gap-6 overflow-x-auto hide-scrollbar snap-x snap-mandatory pb-4"
+          onMouseEnter={() => { pausedRef.current = true }}
+          onMouseLeave={() => { pausedRef.current = false }}
+          className="max-w-6xl mx-auto px-3 sm:px-6 flex gap-6 overflow-x-auto hide-scrollbar pb-4"
         >
           <ImpactCard
             imageSrc={carbonDividendImg}
@@ -344,7 +370,7 @@ export default function RewardsDashboard() {
 
 function ImpactCard({ imageSrc, imageAlt, label, title, value, valueLabel, body }) {
   return (
-    <div className="group snap-start shrink-0 w-[320px] sm:w-[360px] fc-card overflow-hidden cursor-pointer hover:shadow-lg transition-all duration-300">
+    <div className="group shrink-0 w-[320px] sm:w-[360px] fc-card overflow-hidden cursor-pointer hover:shadow-lg transition-all duration-300">
       <div className="aspect-video bg-[#E8E4DF] overflow-hidden">
         <img src={imageSrc} alt={imageAlt} className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-500" />
       </div>
