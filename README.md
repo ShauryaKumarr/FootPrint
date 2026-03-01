@@ -79,6 +79,10 @@ FootPrint is a spending-to-carbon tracker that connects to your bank, scores eve
 Meet the team behind FootPrint:
 
 ![image](https://github.com/user-attachments/assets/68741c6b-f361-4263-bd2e-0353f58daa62)
+
+<div align="center">
+  <img src="src/assets/aarush.png" width="200" alt="Aarush Goyal">
+</div>
 <div align="center">
   <table>
     <tr>
@@ -104,7 +108,6 @@ Meet the team behind FootPrint:
           cagrawal@udel.edu
       </td>
       <td align="center">
-        <img src="src/assets/aarush.png" width="150" height="150" style="border-radius:50%; object-fit:cover;" alt="Aarush Goyal">
         <p><strong>Aarush Goyal</strong></p>
         <a href="https://www.linkedin.com/in/aarushgoyal/">
           <img src="https://img.shields.io/badge/LinkedIn-Connect-blue?style=flat-square&logo=linkedin" alt="LinkedIn">
