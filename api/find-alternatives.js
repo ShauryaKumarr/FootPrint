@@ -4,7 +4,7 @@ const productDatabase = {
       name: 'Plastic Water Bottles (24-pack)', 
       store: 'Amazon', 
       price: 15.99,
-      imageUrl: 'https://images.unsplash.com/photo-1550505095-81378a674395?auto=format&fit=crop&w=500&q=60',
+      imageUrl: 'https://images.unsplash.com/photo-1617150119111-09bbb85178b0?auto=format&fit=crop&w=500&q=60',
       productUrl: 'https://www.amazon.com/dp/B08J5F45N1'
     },
     alternatives: [
