@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { NavLink } from 'react-router-dom'
+import { NavLink, Link } from 'react-router-dom'
 
 const links = [
   { to: '/', label: 'Home' },
@@ -8,8 +8,6 @@ const links = [
   { to: '/rewards', label: 'Rewards' },
   { to: '/alternatives', label: 'Green Alternatives' },
 ]
-
-const FUTURECARD_URL = 'https://www.futurecard.co/futurecard'
 
 export default function Navbar() {
   const [open, setOpen] = useState(false)
@@ -31,9 +29,9 @@ export default function Navbar() {
               key={to}
               to={to}
               className={({ isActive }) =>
-                `text-sm font-medium transition-colors ${
+                `nav-underline text-sm font-medium transition-colors ${
                   isActive
-                    ? 'text-[#0B3D2E]'
+                    ? 'text-[#0B3D2E] active'
                     : 'text-[#4A5568] hover:text-[#0B3D2E]'
                 }`
               }
@@ -44,14 +42,9 @@ export default function Navbar() {
         </div>
 
         <div className="hidden md:block">
-          <a
-            href={FUTURECARD_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="fc-btn text-sm !py-2.5 !px-6"
-          >
+          <Link to="/" className="fc-btn text-sm !py-2.5 !px-6">
             Join Now
-          </a>
+          </Link>
         </div>
 
         <button
@@ -85,14 +78,9 @@ export default function Navbar() {
               {label}
             </NavLink>
           ))}
-          <a
-            href={FUTURECARD_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="fc-btn text-sm mt-3 w-full"
-          >
+          <Link to="/" onClick={() => setOpen(false)} className="fc-btn text-sm mt-3 w-full">
             Join Now
-          </a>
+          </Link>
         </div>
       )}
     </nav>
